@@ -3,6 +3,7 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
 
@@ -13,16 +14,14 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a(class="brand",href="/") New era Blog
+          a(class="brand",href="/") TREV
           div.nav-collapse
             ul.nav
               li.active
                 a(href="/") Home
               - if (user)
                 li
-                  a(href="/post/add") Add post
-              li
-                a(href="#") Contact
+                  a(href="/post/add") Reps
             p.navbar-text.pull-right
               - if (user)
                   span Logged in as 

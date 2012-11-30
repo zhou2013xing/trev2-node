@@ -10,7 +10,7 @@ var express = require('express')
   , moment = require('moment')
   , cluster = require('cluster')
   , os = require('os')
-  , db = require('mongojs').connect('blog', ['post', 'user']);
+  , db = require('mongojs').connect('trev', ['rep', 'user']);
 
 var conf = {
   salt: 'rdasSDAg'
@@ -73,100 +73,101 @@ app.error(function(err, req, res, next){
 
 // Listing
 app.get('/', function(req, res) {
-  var fields = { subject: 1, body: 1, tags: 1, created: 1, author: 1 };
-  db.post.find({ state: 'published'}, fields).sort({ created: -1}, function(err, posts) {
-    if (!err && posts) {
-      res.render('index.jade', { title: 'New era blog', postList: posts }); 
-    }
-  });
-});
-
-app.get('/post/add', isUser, function(req, res) {
-  res.render('add.jade', { title: 'Add new blog post '});
-});
-
-app.post('/post/add', isUser, function(req, res) {
-  var values = {
-      subject: req.body.subject
-    , body: req.body.body
-    , tags: req.body.tags.split(',')
-    , state: 'published'
-    , created: new Date()
-    , modified: new Date()
-    , comments: []
-    , author: { 
-        username: req.session.user.user
+  var fields = { repName: 1, teamName: 1, repOpp: 1, repPace: 1, repChurn: 1, teamLead: 1 };
+  db.rep.find(fields), function(err, reps) {
+    if (!err && reps) {
+      res.render('index.jade', { title: '[Team Name]', repList: reps }); 
     }
   };
+});
 
-  db.post.insert(values, function(err, post) {
-    console.log(err, post);
+app.get('/rep/add', isUser, function(req, res) {
+  res.render('add.jade', { title: '[Team Name] - Reps '});
+});
+
+app.post('/rep/add', isUser, function(req, res) {
+  var value = req.body.value
+  var values = {
+      repName: value.name
+    , teamName: value.team
+    , repOpp: value.opp
+    , repPace: value.pace
+    , repChurn: value.churn
+    , teamLead: { 
+        username: req.session.user.user
+      }
+    , created: new Date()
+    , modified: new Date()
+  };
+
+  db.post.insert(values, function(err, rep) {
+    console.log(err, rep);
     res.redirect('/');
   });
 });
 // Show post
 // Route param pre condition
-app.param('postid', function(req, res, next, id) {
-  if (id.length != 24) throw new NotFound('The post id is not having correct length');
+app.param('repid', function(req, res, next, id) {
+  if (id.length != 24) throw new NotFound('The rep id is not having correct length');
 
-  db.post.findOne({ _id: db.ObjectId(id) }, function(err, post) {
-    if (err) return next(new Error('Make sure you provided correct post id'));
-    if (!post) return next(new Error('Post loading failed'));
-    req.post = post;
+  db.rep.findOne({ _id: db.ObjectId(id) }, function(err, rep) {
+    if (err) return next(new Error('Make sure you provided correct rep id'));
+    if (!rep) return next(new Error('Rep loading failed'));
+    req.rep = rep;
     next();
   });
 });
 
-app.get('/post/edit/:postid', isUser, function(req, res) {
-  res.render('edit.jade', { title: 'Edit post', blogPost: req.post } );
+app.get('/rep/edit/:repid', isUser, function(req, res) {
+  res.render('edit.jade', { title: 'Edit Rep', rep: req.rep } );
 });
 
-app.post('/post/edit/:postid', isUser, function(req, res) {
-  db.post.update({ _id: db.ObjectId(req.body.id) }, { 
-    $set: { 
-        subject: req.body.subject
-      , body: req.body.body
-      , tags: req.body.tags.split(',')
-      , modified: new Date()
-    }}, function(err, post) {
-      if (!err) {
-        req.flash('info', 'Post has been sucessfully edited');
-      }
-      res.redirect('/');
-    });
-});
+// app.post('/post/edit/:postid', isUser, function(req, res) {
+//   db.post.update({ _id: db.ObjectId(req.body.id) }, { 
+//     $set: { 
+//         subject: req.body.subject
+//       , body: req.body.body
+//       , tags: req.body.tags.split(',')
+//       , modified: new Date()
+//     }}, function(err, post) {
+//       if (!err) {
+//         req.flash('info', 'Post has been sucessfully edited');
+//       }
+//       res.redirect('/');
+//     });
+// });
 
-app.get('/post/delete/:postid', isUser, function(req, res) {
-  db.post.remove({ _id: db.ObjectId(req.params.postid) }, function(err, field) {
+app.get('/rep/delete/:repid', isUser, function(req, res) {
+  db.rep.remove({ _id: db.ObjectId(req.params.repid) }, function(err, field) {
     if (!err) {
-      req.flash('error', 'Post has been deleted');
+      req.flash('error', 'Rep has been deleted');
     } 
     res.redirect('/');
   });
 });
 
-app.get('/post/:postid', function(req, res) {
+app.get('/rep/:repid', function(req, res) {
   res.render('show.jade', { 
-    title: 'Showing post - ' + req.post.subject,
-    post: req.post 
+    title: 'Showing rep - ' + req.rep.repName,
+    rep: req.rep 
   });
 });
 
 // Add comment
-app.post('/post/comment', function(req, res) {
-  var data = {
-      name: req.body.name
-    , body: req.body.comment
-    , created: new Date()
-  };
-  db.post.update({ _id: db.ObjectId(req.body.id) }, {
-    $push: { comments: data }}, { safe: true }, function(err, field) {
-      if (!err) {
-        req.flash('success', 'Comment added to post');
-      }
-      res.redirect('/'); 
-  });
-});
+// app.post('/post/comment', function(req, res) {
+//   var data = {
+//       name: req.body.name
+//     , body: req.body.comment
+//     , created: new Date()
+//   };
+//   db.post.update({ _id: db.ObjectId(req.body.id) }, {
+//     $push: { comments: data }}, { safe: true }, function(err, field) {
+//       if (!err) {
+//         req.flash('success', 'Comment added to post');
+//       }
+//       res.redirect('/'); 
+//   });
+// });
 
 // Login
 app.get('/login', function(req, res) {
