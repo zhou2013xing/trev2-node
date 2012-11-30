@@ -1,0 +1,16 @@
+form(class="form-horizontal",name="add-rep",method="post",action="/rep/add")
+  fieldset
+    legend Add new rep
+
+    div.control-group
+      label.control-label Rep name:
+      div.controls
+        input(type="text",name="name",class="input-xlarge")
+
+    div.control-group
+      label.control-label Team Name:
+      div.controls
+        input(type="text",name="team",class="input-xlarge")
+
+    div.form-actions
+      input(type="submit",value="Post",name="post",class="btn btn-primary")

@@ -73,12 +73,13 @@ app.error(function(err, req, res, next){
 
 // Listing
 app.get('/', function(req, res) {
-  var fields = { repName: 1, teamName: 1, repOpp: 1, repPace: 1, repChurn: 1, teamLead: 1 };
-  db.rep.find(fields), function(err, reps) {
-    if (!err && reps) {
-      res.render('index.jade', { title: '[Team Name]', repList: reps }); 
-    }
-  };
+  // var fields = { repName: 1, teamName: 1, repOpp: 1, repPace: 1, repChurn: 1, teamLead: 1 };
+  // db.rep.find(fields), function(err, reps) {
+  //   if (!err && reps) {
+  //     res.render('index.jade', { title: '[Team Name]', repList: reps }); 
+  //   }
+  // };
+  res.render('index.jade', { title: '[Team Name]', repList: reps });
 });
 
 app.get('/rep/add', isUser, function(req, res) {
@@ -86,13 +87,12 @@ app.get('/rep/add', isUser, function(req, res) {
 });
 
 app.post('/rep/add', isUser, function(req, res) {
-  var value = req.body.value
   var values = {
-      repName: value.name
-    , teamName: value.team
-    , repOpp: value.opp
-    , repPace: value.pace
-    , repChurn: value.churn
+      repName: req.body.name
+    , teamName: req.body.team
+    , repOpp: req.body.opp
+    , repPace: req.body.pace
+    , repChurn: req.body.churn
     , teamLead: { 
         username: req.session.user.user
       }
@@ -100,12 +100,12 @@ app.post('/rep/add', isUser, function(req, res) {
     , modified: new Date()
   };
 
-  db.post.insert(values, function(err, rep) {
+  db.rep.insert(values, function(err, rep) {
     console.log(err, rep);
     res.redirect('/');
   });
 });
-// Show post
+// Show rep
 // Route param pre condition
 app.param('repid', function(req, res, next, id) {
   if (id.length != 24) throw new NotFound('The rep id is not having correct length');
@@ -200,10 +200,10 @@ app.post('/login', function(req, res) {
   });
 });
 
-//The 404
-app.get('/*', function(req, res){
-    throw new NotFound;
-});
+// //The 404
+// app.get('/*', function(req, res){
+//     throw new NotFound;
+// });
 
 function NotFound(msg){
     this.name = 'NotFound';
