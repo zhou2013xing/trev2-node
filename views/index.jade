@@ -1,11 +1,29 @@
-mixin repList(rep)
-  div.span6
-    ul
-      a(href="/rep/#{rep._id}")
-        li #{rep.name} 
-
+mixin repsList(rep)
+  tr
+    td #{rep.repName}
+    td [Team Name]
+    td #{rep.teamLead}
 
 div.hero-unit 
   h1= title
   p (Team overview will show up here)
 
+partial('alert', flash)
+- if (user)
+  //- div
+  //-   - for (var i = 0; i < repList.length; i++)
+  //-     div.row
+  //-       mixin repsList(repList[i])
+  //-       - if (i + 1 < repList.length)
+  //-         mixin repsList(repList[++i])
+  table(class="table table-bordered table-hover")
+    thead
+      tr
+        th Name
+        th Team
+        th Team Lead
+    tbody
+    - for (var i = 0; i < repList.length; i++)
+        mixin repsList(repList[i])
+        - if (i + 1 < repList.length)
+          mixin repsList(repList[++i])

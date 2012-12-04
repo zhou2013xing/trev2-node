@@ -32,11 +32,6 @@ html
 
     partial('alert', flash)
     div.container!= body
-      - if (user)
-          div.span6
-            ul
-              a(href="/rep/#{rep._id}")
-                li #{rep.name} 
       hr
       footer
         p #{new Date().getFullYear()}

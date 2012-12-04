@@ -63,23 +63,21 @@ function isUser(req, res, next) {
   }
 }
 
-app.error(function(err, req, res, next){
-  if (err instanceof NotFound) {
-    res.render('error/404.jade', { title: 'Not found 404' });
-  } else {
-    res.render('error/500.jade', { title: 'Error', error: err });
-  }
-});
+// app.error(function(err, req, res, next){
+//   if (err instanceof NotFound) {
+//     res.render('error/404.jade', { title: 'Not found 404' });
+//   } else {
+//     res.render('error/500.jade', { title: 'Error', error: err });
+//   }
+// });
 
 // Listing
 app.get('/', function(req, res) {
-  // var fields = { repName: 1, teamName: 1, repOpp: 1, repPace: 1, repChurn: 1, teamLead: 1 };
-  // db.rep.find(fields), function(err, reps) {
-  //   if (!err && reps) {
-  //     res.render('index.jade', { title: '[Team Name]', repList: reps }); 
-  //   }
-  // };
-  res.render('index.jade', { title: '[Team Name]', repList: reps });
+  db.rep.find(function(err, reps) {
+    if (!err && reps) {
+      res.render('index.jade', { title: '[Team name]', repList: reps }); 
+    }
+  });
 });
 
 app.get('/rep/add', isUser, function(req, res) {
