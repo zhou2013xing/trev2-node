@@ -1,57 +1,31 @@
-div.row
-  div.span12 
-    h1= title
+form(class="form-horizontal",name="edit-rep",method="post",action="/rep/edit/#{repDetails._id}")
+fieldset
+  legend Edit #{repDetails.repName}'s Details
+  div.control-group
+    label.control-label Name:
+    div.controls
+      input(type="text",name="name",class="input-xlarge span6",value="#{repDetails.repName}")
 
-partial('alert', flash)
-- if (user)
-  //- table(class="table table-condensed")
-  //-   thead
-  //-     tr
-  //-       th Name
-  //-       th Team
-  //-       th Options
-  //-   tbody
-  //-     tr
-  //-       td #{rep.repName}
-  //-       td #{rep.teamName}
-  //-       td
-  //-         //- button(href="/rep/delete/#{rep._id}",class="btn btn-danger") Delete
-  //-         a(href="/rep/delete/#{rep._id}") Delete
-  //- table(class="table table-condensed")
-  //-   thead
-  //-     tr
-  //-       th Opp
-  //-       th Pace
-  //-       th Churn
-  //-   tbody
-  //-     tr
-  //-       td $ #{rep.repOpp}
-  //-       td $ #{rep.repPace}
-  //-       td $ #{rep.repChurn}
+  div.control-group
+    label.control-label Team:
+    div.controls
+      input(type="text",name="team",class="input-xlarge span6",value="#{repDetails.teamName}")
 
-  form(class="form-horizontal",name="edit-rep",method="post",action="/rep/edit/#{repDetails._id}")
-  fieldset
+  div.control-group
+    label.control-label Opp:
+    div.controls
+      input(type="text",name="opp",class="input-xlarge span6",value="#{repDetails.repOpp}")
 
-    div.control-group
-      label.control-label Name:
-      div.controls
-        input(type="text",name="name",class="input-xlarge span6",value="#{repDetails.repName}")
+  div.control-group
+    label.control-label Pace:
+    div.controls
+      input(type="text",name="pace",class="input-xlarge span6",value="#{repDetails.repPace}")
 
-    div.control-group
-      label.control-label Opp:
-      div.controls
-        input(type="text",name="opp",class="input-xlarge span6",value="#{repDetails.repOpp}")
+  div.control-group
+    label.control-label Churn:
+    div.controls
+      input(type="text",name="churn",class="input-xlarge span6",value="#{repDetails.repChurn}")
 
-    div.control-group
-      label.control-label Pace:
-      div.controls
-        input(type="text",name="pace",class="input-xlarge span6",value="#{repDetails.repPace}")
-
-    div.control-group
-      label.control-label Churn:
-      div.controls
-        input(type="text",name="churn",class="input-xlarge span6",value="#{repDetails.repChurn}")
-
-    input(type="hidden",name="id",value="#{repDetails._id}")
-    div.form-actions
-      input(type="submit",value="Save",name="save",class="btn btn-primary")
+  input(type="hidden",name="id",value="#{repDetails._id}")
+  div.form-actions
+    input(type="submit",value="Save",name="save",class="btn btn-primary")

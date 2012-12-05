@@ -15,13 +15,6 @@ div.row
 partial('alert', flash)
 - if (user)
   div.row
-    div.span3
-      div(class="well well-nav")
-        ul(class="nav nav-list")
-          li.nav-header Reps
-          for rep in repList
-            li
-              a(href="/rep/edit/#{rep._id}") #{rep.repName}
     div.span9
       table(class="table table-bordered table-hover table-condensed")
         thead

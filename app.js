@@ -129,11 +129,7 @@ app.get('/reps/edit', isUser, function(req, res) {
 });
 
 app.get('/rep/edit/:repid', isUser, function(req, res) {
-  db.rep.find(function(err, reps) {
-    if (!err && reps) {
-      res.render('edit-rep.jade', { title: '[Team Name] - ' + req.rep.repName, repDetails: req.rep, repList: reps }); 
-    }
-  });
+  res.render('edit-rep.jade', { title: '[Team Name] - Edit Rep Details', repDetails: req.rep }); 
 });
 
 app.post('/rep/edit/:repid', isUser, function(req, res) {
@@ -149,7 +145,7 @@ app.post('/rep/edit/:repid', isUser, function(req, res) {
       if (!err) {
         req.flash('info', 'Rep has been sucessfully edited');
       }
-      res.redirect('/reps/edit');
+      res.redirect('/');
     });
 });
 

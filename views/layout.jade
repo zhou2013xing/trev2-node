@@ -24,19 +24,6 @@ html
                   a(href="#",class="dropdown-toggle",data-toggle="dropdown") Reps 
                     b.caret
                   ul.dropdown-menu
-                    - if (repList.length < 1)
-                      li 
-                        p 
-                          i No assigned reps
-                      li.divider
-                      li.nav-header Options
-                      li
-                        a(href="/rep/add") Add a rep
-                    - else
-                      for rep in repList
-                        li 
-                          a(href="/rep/edit/#{rep._id}") #{rep.repName}
-                      li.divider
                       li.nav-header Options
                       li
                         a(href="/rep/add") Add a rep
@@ -51,7 +38,7 @@ html
                 a(href="/login") Login user
 
 
-    partial('alert', flash)
+    //- partial('alert', flash)
     div.container!= body
       //- hr
       //- footer
