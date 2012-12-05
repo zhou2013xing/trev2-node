@@ -1,28 +1,30 @@
-mixin repsList(rep)
-  tr
-    td #{rep.repName}
-    td [Team Name]
-    td #{rep.teamLead.username}
+- if (!user) 
+  form(class="form-signin",name="login-form",method="post",action="/login")
+    h2(class="form-signin-heading") Please sign in
+    input(type="text",name="username",class="input-block-level",placeholder="Username")
+    input(type="password",name="password",class="input-block-level",placeholder="Password")
+    button(type="submit",value="Login",name="login",class="btn btn-large btn-primary") Sign in
 
-div.row
-  div.span12 
-    h1= title
 
 partial('alert', flash)
 - if (user)
-  - if (repList.length < 1)
-    p There are currently no reps assigned to you
-  - else
-    table(class="table table-bordered table-hover table-condensed")
-      thead
-        tr
-          th Name
-          th Team
-          th Team Lead
-      tbody
-      - for rep in repList
-        tr
-          td #{rep.repName}
-          td [Team Name]
-          td #{rep.teamLead.username}
-    
+  div.row
+    div.span12
+      h1= title
+    - if (repList.length < 1)
+      p 
+        i There are currently no reps assigned to you
+    - else
+      table(class="table table-bordered table-hover table-condensed")
+        thead
+          tr
+            th Name
+            th Team
+            th Team Lead
+        tbody
+        - for rep in repList
+          tr
+            td #{rep.repName}
+            td [Team Name]
+            td #{rep.teamLead.username}
+      

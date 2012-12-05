@@ -1,16 +1,5 @@
-form(class="form-horizontal",name="login-form",method="post",action="/login")
-  fieldset
-    legend Login user
-
-    div.control-group
-      label.control-label Username:
-      div.controls
-        input(type="text",name="username",class="input-xlarge")
-
-    div.control-group
-      label.control-label Password:
-      div.controls
-        input(type="password",name="password",class="input-xlarge")
-
-    div.form-actions
-      input(type="submit",value="Login",name="login",class="btn btn-primary")
+form(class="form-signin",name="login-form",method="post",action="/login")
+  h2(class="form-signin-heading") Please sign in
+  input(type="text",name="username",class="input-block-level",placeholder="Username")
+  input(type="password",name="password",class="input-block-level",placeholder="Password")
+  button(type="submit",value="Login",name="login",class="btn btn-large btn-primary") Sign in
