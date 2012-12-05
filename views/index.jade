@@ -10,11 +10,11 @@ partial('alert', flash)
 - if (user)
   div.row
     div.span12
-      h1= title
     - if (repList.length < 1)
-      div(class="alert alert-error")
-        p You currently have not reps assigned to you. Please add reps to your team.
+      h1= title
+      div(class="alert alert-error") You currently have no reps assigned to you. Please add reps to your team.
     - else
+      h1= title
       table(class="table table-bordered table-hover table-condensed")
         thead
           tr
@@ -24,7 +24,8 @@ partial('alert', flash)
         tbody
         - for rep in repList
           tr
-            td #{rep.repName}
-            td [Team Name]
+            td
+              a(href="/rep/#{rep._id}") #{rep.repName}
+            td #{rep.teamName}
             td #{rep.teamLead.username}
       

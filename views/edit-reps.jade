@@ -1,16 +1,16 @@
 mixin repsList(rep)
   tr
     td #{rep.repName}
-    td [Team Name]
+    td #{rep.teamName}
     td 
       //- button(href="/rep/delete/#{rep._id}",class="btn btn-danger") Delete
       a(href="/rep/delete/#{rep._id}") Delete
+      &nbsp; 
       a(href="/rep/edit/#{rep._id}") Edit
 
 div.row
   div.span12 
     h1= title
-    p (Team overview will show up here)
 
 partial('alert', flash)
 - if (user)
