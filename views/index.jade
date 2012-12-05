@@ -12,8 +12,8 @@ partial('alert', flash)
     div.span12
       h1= title
     - if (repList.length < 1)
-      p 
-        i There are currently no reps assigned to you
+      div(class="alert alert-error")
+        p You currently have not reps assigned to you. Please add reps to your team.
     - else
       table(class="table table-bordered table-hover table-condensed")
         thead
