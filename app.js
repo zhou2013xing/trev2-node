@@ -131,25 +131,27 @@ app.get('/reps/edit', isUser, function(req, res) {
 app.get('/rep/edit/:repid', isUser, function(req, res) {
   db.rep.find(function(err, reps) {
     if (!err && reps) {
-      res.render('edit-rep.jade', { title: '[Team Name] - ' + req.rep.repName, rep: req.rep, repList: reps }); 
+      res.render('edit-rep.jade', { title: '[Team Name] - ' + req.rep.repName, repDetails: req.rep, repList: reps }); 
     }
   });
 });
 
-// app.post('/post/edit/:postid', isUser, function(req, res) {
-//   db.post.update({ _id: db.ObjectId(req.body.id) }, { 
-//     $set: { 
-//         subject: req.body.subject
-//       , body: req.body.body
-//       , tags: req.body.tags.split(',')
-//       , modified: new Date()
-//     }}, function(err, post) {
-//       if (!err) {
-//         req.flash('info', 'Post has been sucessfully edited');
-//       }
-//       res.redirect('/');
-//     });
-// });
+app.post('/rep/edit/:repid', isUser, function(req, res) {
+  db.rep.update({ _id: db.ObjectId(req.body.id) }, { 
+    $set: { 
+        repName: req.body.name
+      , teamName: req.body.team
+      , repOpp: req.body.opp
+      , repPace: req.body.pace
+      , repChurn: req.body.churn
+      , modified: new Date()
+    }}, function(err, rep) {
+      if (!err) {
+        req.flash('info', 'Rep has been sucessfully edited');
+      }
+      res.redirect('/reps/edit');
+    });
+});
 
 app.get('/rep/delete/:repid', isUser, function(req, res) {
   db.rep.remove({ _id: db.ObjectId(req.params.repid) }, function(err, field) {
@@ -160,12 +162,12 @@ app.get('/rep/delete/:repid', isUser, function(req, res) {
   });
 });
 
-app.get('/rep/:repid', function(req, res) {
-  res.render('show.jade', { 
-    title: 'Showing rep - ' + req.rep.repName,
-    rep: req.rep 
-  });
-});
+// app.get('/rep/:repid', function(req, res) {
+//   res.render('show.jade', { 
+//     title: 'Showing rep - ' + req.rep.repName,
+//     rep: req.rep 
+//   });
+// });
 
 // Add comment
 // app.post('/post/comment', function(req, res) {

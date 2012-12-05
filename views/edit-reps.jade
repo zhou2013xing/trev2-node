@@ -14,14 +14,23 @@ div.row
 
 partial('alert', flash)
 - if (user)
-  table(class="table table-bordered table-hover table-condensed")
-    thead
-      tr
-        th Name
-        th Team
-        th Options
-    tbody
-    - for (var i = 0; i < repList.length; i++)
-        mixin repsList(repList[i])
-        - if (i + 1 < repList.length)
-          mixin repsList(repList[++i])
+  div.row
+    div.span3
+      div(class="well well-nav")
+        ul(class="nav nav-list")
+          li.nav-header Reps
+          for rep in repList
+            li
+              a(href="/rep/edit/#{rep._id}") #{rep.repName}
+    div.span9
+      table(class="table table-bordered table-hover table-condensed")
+        thead
+          tr
+            th Name
+            th Team
+            th Options
+        tbody
+        - for (var i = 0; i < repList.length; i++)
+            mixin repsList(repList[i])
+            - if (i + 1 < repList.length)
+              mixin repsList(repList[++i])

@@ -39,3 +39,7 @@ a {
 .dropdown-menu > li > p {
 	padding-left: 10px;
 }
+
+.well-nav {
+	padding: 5px;
+}
