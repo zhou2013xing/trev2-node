@@ -63,13 +63,13 @@ function isUser(req, res, next) {
   }
 }
 
-// app.error(function(err, req, res, next){
-//   if (err instanceof NotFound) {
-//     res.render('error/404.jade', { title: 'Not found 404' });
-//   } else {
-//     res.render('error/500.jade', { title: 'Error', error: err });
-//   }
-// });
+app.error(function(err, req, res, next){
+  if (err instanceof NotFound) {
+    res.render('error/404.jade', { title: 'Not found 404' });
+  } else {
+    res.render('error/500.jade', { title: 'Error', error: err });
+  }
+});
 
 // Listing
 app.get('/', function(req, res) {
@@ -110,21 +110,13 @@ app.post('/rep/add', isUser, function(req, res) {
 // Show rep
 // Route param pre condition
 app.param('repid', function(req, res, next, id) {
-  if (id.length != 24) throw new NotFound('The rep id is not having correct length');
+  if (id.length != 24) throw new NotFound('The rep id does not have the correct length');
 
   db.rep.findOne({ _id: db.ObjectId(id) }, function(err, rep) {
-    if (err) return next(new Error('Make sure you provided correct rep id'));
+    if (err) return next(new Error('Make sure you provided the correct rep id'));
     if (!rep) return next(new Error('Rep loading failed'));
     req.rep = rep;
     next();
-  });
-});
-
-app.get('/reps/edit', isUser, function(req, res) {
-  db.rep.find(function(err, reps) {
-    if (!err && reps) {
-      res.render('edit-reps.jade', { title: '[Team Name] - Edit reps', repList: reps }); 
-    }
   });
 });
 
@@ -133,9 +125,9 @@ app.get('/rep/edit/:repid', isUser, function(req, res) {
 });
 
 app.post('/rep/edit/:repid', isUser, function(req, res) {
-  db.rep.update({ _id: db.ObjectId(req.body.id) }, { 
+  db.rep.update({ _id: db.ObjectId(req.params.repid) }, { 
     $set: { 
-        repName: req.body.name
+      repName: req.body.name
       , teamName: req.body.team
       , repOpp: req.body.opp
       , repPace: req.body.pace
@@ -181,6 +173,14 @@ app.get('/rep/delete/:repid', isUser, function(req, res) {
 //   });
 // });
 
+app.get('/reps/edit', isUser, function(req, res) {
+  db.rep.find(function(err, reps) {
+    if (!err && reps) {
+      res.render('edit-reps.jade', { title: '[Team Name] - Edit reps', repList: reps }); 
+    }
+  });
+});
+
 // Login
 app.get('/login', function(req, res) {
   res.render('login.jade', {
@@ -212,10 +212,10 @@ app.post('/login', function(req, res) {
   });
 });
 
-// //The 404
-// app.get('/*', function(req, res){
-//     throw new NotFound;
-// });
+//The 404
+app.get('/*', function(req, res){
+    throw new NotFound;
+});
 
 function NotFound(msg){
     this.name = 'NotFound';
