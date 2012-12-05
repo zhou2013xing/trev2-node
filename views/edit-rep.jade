@@ -1,6 +1,7 @@
 form(class="form-horizontal",name="edit-rep",method="post",action="/rep/edit/#{repDetails._id}")
 fieldset
-  legend Edit #{repDetails.repName}'s Details
+  legend Edit #{repDetails.repName}'s Details (id: #{repDetails._id})
+  
   div.control-group
     label.control-label Name:
     div.controls
@@ -11,21 +12,6 @@ fieldset
     div.controls
       input(type="text",name="team",class="input-xlarge span6",value="#{repDetails.teamName}")
 
-  div.control-group
-    label.control-label Opp:
-    div.controls
-      input(type="text",name="opp",class="input-xlarge span6",value="#{repDetails.repOpp}")
-
-  div.control-group
-    label.control-label Pace:
-    div.controls
-      input(type="text",name="pace",class="input-xlarge span6",value="#{repDetails.repPace}")
-
-  div.control-group
-    label.control-label Churn:
-    div.controls
-      input(type="text",name="churn",class="input-xlarge span6",value="#{repDetails.repChurn}")
-
-  //- input(type="hidden",name="id",value="#{repDetails._id}")
+  input(type="hidden",name="id",value="#{repDetails._id}")
   div.form-actions
-    input(type="submit",value="Save",name="save",class="btn btn-primary")
+    input(type="submit",value="Edit",name="edit",class="btn btn-primary")

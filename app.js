@@ -92,9 +92,6 @@ app.post('/rep/add', isUser, function(req, res) {
   var values = {
       repName: req.body.name
     , teamName: req.body.team
-    , repOpp: req.body.opp
-    , repPace: req.body.pace
-    , repChurn: req.body.churn
     , teamLead: { 
         username: req.session.user.user
       }
@@ -125,17 +122,19 @@ app.get('/rep/edit/:repid', isUser, function(req, res) {
 });
 
 app.post('/rep/edit/:repid', isUser, function(req, res) {
-  db.rep.update({ _id: db.ObjectId(req.params.repid) }, { 
+  db.rep.update({ _id: db.ObjectId(req.body.id) }, { 
     $set: { 
-      repName: req.body.name
+        repName: req.body.name
       , teamName: req.body.team
-      , repOpp: req.body.opp
-      , repPace: req.body.pace
-      , repChurn: req.body.churn
+      // , repOpp: req.body.opp
+      // , repPace: req.body.pace
+      // , repChurn: req.body.churn
       , modified: new Date()
     }}, function(err, rep) {
       if (!err) {
         req.flash('info', 'Rep has been sucessfully edited');
+      } else {
+        req.flash('error', err)
       }
       res.redirect('/');
     });
