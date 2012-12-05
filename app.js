@@ -81,7 +81,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/rep/add', isUser, function(req, res) {
-  res.render('add.jade', { title: '[Team Name] - Reps '});
+  db.rep.find(function(err, reps) {
+    if (!err && reps) {
+      res.render('add.jade', { title: '[Team Name] - Add a rep', repList: reps }); 
+    }
+  });
 });
 
 app.post('/rep/add', isUser, function(req, res) {
@@ -116,8 +120,20 @@ app.param('repid', function(req, res, next, id) {
   });
 });
 
+app.get('/reps/edit', isUser, function(req, res) {
+  db.rep.find(function(err, reps) {
+    if (!err && reps) {
+      res.render('edit-reps.jade', { title: '[Team Name] - Edit reps', repList: reps }); 
+    }
+  });
+});
+
 app.get('/rep/edit/:repid', isUser, function(req, res) {
-  res.render('edit.jade', { title: 'Edit Rep', rep: req.rep } );
+  db.rep.find(function(err, reps) {
+    if (!err && reps) {
+      res.render('edit-rep.jade', { title: '[Team Name] - ' + req.rep.repName, rep: req.rep, repList: reps }); 
+    }
+  });
 });
 
 // app.post('/post/edit/:postid', isUser, function(req, res) {

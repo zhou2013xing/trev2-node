@@ -1,0 +1,20 @@
+div.row
+  div.span12 
+    h1= title
+    p (Team overview will show up here)
+
+partial('alert', flash)
+- if (user)
+  table(class="table table-condensed")
+    thead
+      tr
+        th Name
+        th Team
+        th Options
+    tbody
+      tr
+        td #{rep.repName}
+        td [Team Name]
+        td
+          //- button(href="/rep/delete/#{rep._id}",class="btn btn-danger") Delete
+          a(href="/rep/delete/#{rep._id}") Delete
