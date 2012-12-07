@@ -10,7 +10,7 @@ var express = require('express')
   , moment = require('moment')
   , cluster = require('cluster')
   , os = require('os')
-  , db = require('mongojs').connect('trev', ['rep', 'user']);
+  , db = require('mongojs').connect('repdb', ['rep', 'user']);
 
 var conf = {
   salt: 'rdasSDAg'
@@ -95,6 +95,7 @@ app.post('/rep/add', isUser, function(req, res) {
     , teamLead: { 
         username: req.session.user.user
       }
+    , values: []
     , created: new Date()
     , modified: new Date()
   };
@@ -117,18 +118,39 @@ app.param('repid', function(req, res, next, id) {
   });
 });
 
-app.get('/rep/edit/:repid', isUser, function(req, res) {
+app.get('/reps/edit', isUser, function(req, res) {
+  db.rep.find(function(err, reps) {
+    if (!err && reps) {
+      res.render('edit-reps.jade', { title: '[Team Name] - Edit reps', repList: reps }); 
+    }
+  });
+});
+
+app.get('/rep/:repid/edit', isUser, function(req, res) {
   res.render('edit-rep.jade', { title: '[Team Name] - Edit Rep Details', repDetails: req.rep }); 
 });
 
+// app.post('/rep/edit/:repid', isUser, function(req, res) {
+//   db.rep.update({ _id: db.ObjectId(req.body.id) }, { 
+//     $set: { 
+//         repName: req.body.name
+//       , teamName: req.body.team
+//       , modified: new Date()
+//     }}, function(err, rep) {
+//       if (!err) {
+//         req.flash('info', 'Rep has been sucessfully edited');
+//       } else {
+//         req.flash('error', err)
+//       }
+//       res.redirect('/');
+//     });
+// });
+
 app.post('/rep/edit/:repid', isUser, function(req, res) {
-  db.rep.update({ _id: db.ObjectId(req.body.id) }, { 
+  db.rep.update({ _id: db.ObjectId(req.body.id) }, {
     $set: { 
         repName: req.body.name
       , teamName: req.body.team
-      // , repOpp: req.body.opp
-      // , repPace: req.body.pace
-      // , repChurn: req.body.churn
       , modified: new Date()
     }}, function(err, rep) {
       if (!err) {
@@ -136,7 +158,7 @@ app.post('/rep/edit/:repid', isUser, function(req, res) {
       } else {
         req.flash('error', err)
       }
-      res.redirect('/');
+      res.redirect('/reps/edit');
     });
 });
 
@@ -172,14 +194,6 @@ app.get('/rep/delete/:repid', isUser, function(req, res) {
 //   });
 // });
 
-app.get('/reps/edit', isUser, function(req, res) {
-  db.rep.find(function(err, reps) {
-    if (!err && reps) {
-      res.render('edit-reps.jade', { title: '[Team Name] - Edit reps', repList: reps }); 
-    }
-  });
-});
-
 // Login
 app.get('/login', function(req, res) {
   res.render('login.jade', {
@@ -211,10 +225,10 @@ app.post('/login', function(req, res) {
   });
 });
 
-//The 404
-app.get('/*', function(req, res){
-    throw new NotFound;
-});
+// //The 404
+// app.get('/*', function(req, res){
+//     throw new NotFound;
+// });
 
 function NotFound(msg){
     this.name = 'NotFound';

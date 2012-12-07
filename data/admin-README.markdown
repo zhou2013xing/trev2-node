@@ -1,11 +1,11 @@
-# Blog example
+# TREV example
 
-To run the example you need node.js and some initalized data into mongodb. The collections are user, post.
+To run the example you need node.js and some initalized data into mongodb. The collections are user, rep.
    
 Adding init data to mongoDB(located in data directory), test user is admin and password is also admin
 	
-	mongoimport -d blog -c user init.js
+	mongoimport -d repdb -c user init.js
 
-Run the blog
+Run the app
 
     node app.js
